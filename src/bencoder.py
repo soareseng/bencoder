@@ -80,27 +80,27 @@ class Decoder:
 
     def _decode_int(self) -> int:
         self.index += 1
-        end: int = self.data.find(b"e", self.index)
+        end = self.data.find(b"e", self.index)
         if end == -1:
             raise BencodeDecodeError("Integer not terminated with 'e'")
         number_bytes: bytes = self.data[self.index : end]
         try:
-            number: int = int(number_bytes)
+            number = int(number_bytes)
         except ValueError:
             raise BencodeDecodeError("Invalid integer value")
         self.index = end + 1
         return number
 
     def _decode_bytes(self) -> bytes:
-        colon: int = self.data.find(b":", self.index)
+        colon = self.data.find(b":", self.index)
         if colon == -1:
             raise BencodeDecodeError("Invalid string: missing ':'")
         length_part: bytes = self.data[self.index : colon]
         if not length_part.isdigit():
             raise BencodeDecodeError("Invalid string length")
-        str_len: int = int(length_part)
-        start: int = colon + 1
-        end: int = start + str_len
+        str_len = int(length_part)
+        start = colon + 1
+        end = start + str_len
         if end > self.length:
             raise BencodeDecodeError("String length exceeds input size")
         result: bytes = self.data[start:end]
