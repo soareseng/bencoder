@@ -1,4 +1,4 @@
-# Bencoder – Python Bencode Encoder/Decoder
+# Bencoder
 
 [![Python Version](https://img.shields.io/badge/python-3.9%2B-blue.svg)](https://www.python.org/)
 [![Tests](https://img.shields.io/badge/tests-pytest-green.svg)](https://docs.pytest.org/)
