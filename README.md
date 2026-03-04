@@ -58,56 +58,6 @@ print(decoded)
 
 Note: all strings are converted to bytes after decoding, in accordance with the Bencode specification.
 
-## Typing
-
-All methods use the recursive type `BencodeValue`:
-
-```python
-from typing import Union, List, Dict, TypeAlias
-
-BencodeValue: TypeAlias = Union[int, bytes, List["BencodeValue"], Dict[bytes, "BencodeValue"]]
-```
-
-- `Encoder.encode(value: BencodeValue) -> bytes`
-- `Decoder.decode() -> BencodeValue`
-
-This ensures type safety even in nested structures and works with `mypy --strict`.
-
-## Errors
-
-The module defines explicit exceptions for better robustness:
-
-- `BencodeEncodeError`: unsupported type or invalid dictionary key
-- `BencodeDecodeError`: malformed input, invalid string, or unterminated integer
-
-```python
-from src.bencoder import BencodeEncodeError, BencodeDecodeError, Encoder
-
-try:
-    Encoder().encode({1: "invalid"})
-except BencodeEncodeError as e:
-    print(e)
-```
-
-## Testing
-
-The module comes with **comprehensive pytest tests**, covering:
-
-- All supported types (`int`, `bytes`, `str`, `list`, `dict`)
-
-- Nested structures of arbitrary depth
-
-- Invalid inputs
-
-- Round-trip encode -> decode validation
-
-- Post-decode type checks (`bytes`, `int`, `list`, `dict`)
-
-```bash
-# Run all tests
-pytest -v tests/
-```
-
 ## Contributing
 
 Pull requests are welcome!
