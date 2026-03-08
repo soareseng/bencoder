@@ -23,7 +23,7 @@ class Encoder:
             return f"i{value}e".encode()
 
         if isinstance(value, str):
-            encoded: bytes = value.encode()
+            encoded = value.encode()
             return f"{len(encoded)}:".encode() + encoded
 
         if isinstance(value, bytes):
@@ -38,8 +38,8 @@ class Encoder:
             for key in sorted(value.keys()):
                 if not isinstance(key, (str, bytes)):
                     raise BencodeEncodeError("Dictionary keys must be str or bytes")
-                encoded_key: bytes = self.encode(key)
-                encoded_value: bytes = self.encode(value[key])
+                encoded_key = self.encode(key)
+                encoded_value = self.encode(value[key])
                 encoded_items.append(encoded_key + encoded_value)
             return b"d" + b"".join(encoded_items) + b"e"
 
@@ -62,7 +62,7 @@ class Decoder:
         if self.index >= self.length:
             raise BencodeDecodeError("Unexpected end of input")
 
-        char: bytes = self.data[self.index : self.index + 1]
+        char = self.data[self.index : self.index + 1]
 
         if char == b"i":
             return self._decode_int()
@@ -83,7 +83,7 @@ class Decoder:
         end = self.data.find(b"e", self.index)
         if end == -1:
             raise BencodeDecodeError("Integer not terminated with 'e'")
-        number_bytes: bytes = self.data[self.index : end]
+        number_bytes = self.data[self.index : end]
         try:
             number = int(number_bytes)
         except ValueError:
@@ -95,7 +95,7 @@ class Decoder:
         colon = self.data.find(b":", self.index)
         if colon == -1:
             raise BencodeDecodeError("Invalid string: missing ':'")
-        length_part: bytes = self.data[self.index : colon]
+        length_part = self.data[self.index : colon]
         if not length_part.isdigit():
             raise BencodeDecodeError("Invalid string length")
         str_len = int(length_part)
@@ -103,7 +103,7 @@ class Decoder:
         end = start + str_len
         if end > self.length:
             raise BencodeDecodeError("String length exceeds input size")
-        result: bytes = self.data[start:end]
+        result = self.data[start:end]
         self.index = end
         return result
 
